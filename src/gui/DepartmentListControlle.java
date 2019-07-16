@@ -1,6 +1,6 @@
 package gui;
 
-import java.net.URL;
+import java.net.URL; 
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -53,8 +53,6 @@ public class DepartmentListControlle implements Initializable{
 		
 	}
 
-
-
 	private void InitializableNodes() {
 	
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -75,9 +73,6 @@ public class DepartmentListControlle implements Initializable{
 		List<Department> list = service.findAll();
 		obsList = FXCollections.observableArrayList(list);
 		tableViewDepartment.setItems(obsList);
-		
-		
-		
 		
 	}
 

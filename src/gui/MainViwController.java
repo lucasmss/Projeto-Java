@@ -26,8 +26,7 @@ public class MainViwController  implements Initializable{
 	@FXML
 	private MenuItem menuItemDepartamento; 
 	
-	@FXML
-	private MenuItem menuItemAbout;
+	@FXML	private MenuItem menuItemAbout;
 	
 	@FXML
 	private void onMenuItemVendedorAction() {
@@ -40,10 +39,8 @@ public class MainViwController  implements Initializable{
 	private void onMenuItemDepartamentoAction() {
 		
 		loadView("/gui/DepartmentList.fxml", (DepartmentListControlle controller) -> {
-			controller.setDepartmentService(new DepartmentService());
-			controller.updateTableView();
-			
-			
+		controller.setDepartmentService(new DepartmentService());
+			controller.updateTableView();	
 		});
 			
 	}
