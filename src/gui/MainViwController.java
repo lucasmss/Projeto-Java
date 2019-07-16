@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import application.Main;
 import gui.util.Alerts;
@@ -38,14 +39,19 @@ public class MainViwController  implements Initializable{
 	@FXML
 	private void onMenuItemDepartamentoAction() {
 		
-		loadView2("/gui/DepartmentList.fxml");
+		loadView("/gui/DepartmentList.fxml", (DepartmentListControlle controller) -> {
+			controller.setDepartmentService(new DepartmentService());
+			controller.updateTableView();
+			
+			
+		});
 			
 	}
 	
 	@FXML
 	private void onMenuItemAboutAction() {
 		
-		loadView("/gui/About.fxml");
+		loadView("/gui/About.fxml", x -> {});
 			
 	}
 	
@@ -55,28 +61,7 @@ public class MainViwController  implements Initializable{
 		
 	}
 	
-	private synchronized void loadView(String absoluteName) {
-		try {
-			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-			VBox newVBox = loader.load();
-			
-			Scene mainScene = Main.getMainScene();
-			VBox mainVBox =(VBox) ((ScrollPane)mainScene.getRoot()).getContent();
-			
-			Node mainMenu = mainVBox.getChildren().get(0);	
-			mainVBox.getChildren().clear();
-			mainVBox.getChildren().add(mainMenu);
-			mainVBox.getChildren().addAll(newVBox.getChildren());
-		
-		}
-		catch(IOException e) {
-			Alerts.showAlert("IO Exception", "Error loading", e.getMessage(), AlertType.ERROR);
-		}
-		
-	}
-	
-	private synchronized void loadView2(String absoluteName) {
+	private synchronized <T> void loadView(String absoluteName, Consumer<T> initializeAction) {
 		try {
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
@@ -90,9 +75,8 @@ public class MainViwController  implements Initializable{
 			mainVBox.getChildren().add(mainMenu);
 			mainVBox.getChildren().addAll(newVBox.getChildren());
 			
-			DepartmentListControlle controller = loader.getController();
-			controller.setDepartmentService(new DepartmentService());
-			controller.updateTableView();
+			T controller = loader.getController();
+			initializeAction.accept(controller);
 		
 		}
 		catch(IOException e) {
@@ -100,7 +84,4 @@ public class MainViwController  implements Initializable{
 		}
 		
 	}
-	
-	
-
 }
